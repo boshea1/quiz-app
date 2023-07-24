@@ -1,23 +1,30 @@
-import logo from './logo.svg';
+import { useEffect, useState } from 'react';
 import './App.css';
+import Card from './components/Card';
+import axios from 'axios';
 
 function App() {
+  const [question, setQuestion] = useState('')
+  const baseURL='https://opentdb.com/api.php?amount=10'
+  useEffect(()=>{
+    axios.get(baseURL).then((response) => {
+      setQuestion(response.data);
+    });
+  },[])
+  
+  
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div className="h-[100vh] w-full">
+     <div className={'border-2 text-center text-4xl border-black m-6 p-2 bg-green-50'}>
+      Quiz
+     </div>
+     <div className='h-[800px] '>
+      {question && question.results.map((item, id)=>
+          <Card key={id} details={item}/>
+      )
+
+      }
+     </div>
     </div>
   );
 }
