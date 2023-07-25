@@ -9,18 +9,25 @@ function App() {
   const  interactive = useStoreState((state) => state.interactive);
   const addInteractive = useStoreActions((actions) => actions.addInteractive);
   const [questions, setQuestions] = useState('')
-  const baseURL='https://opentdb.com/api.php?amount=10'
+  const [category, setCategory] = useState('')
+  const baseURL=`https://opentdb.com/api.php?amount=10${category?`&category=${category}`:''}`
   useEffect(()=>{
     axios.get(baseURL).then((response) => {
       setQuestions(response.data);
     });
-  },[])
-
+  },[baseURL])
+  
   const onToggle = (e) => {
     console.log(e)
     addInteractive()
   }
   
+  const options = {geography:22, history:23}
+  const onOptionChangeHandler = (event) => {
+    const c = event.target.value
+    console.log("User Selected Value - ", event.target.value)
+    setCategory(options[c])
+  }
   
   return (
     <div className="h-[100vh] w-full">
@@ -38,7 +45,14 @@ function App() {
           active={interactive}
           />
           </div>
-          {/* <div className='inline ml-20'>{interactive?'ON':'OFF'}</div> */}
+          <div>
+          <select onChange={onOptionChangeHandler}>
+          <option>Please choose one option</option>
+          {Object.keys(options).map((keyname,i)=>(
+            <option key={i}>{keyname}</option>
+          ))}
+          </select>
+          </div>
  
 </div>
      <div className='h-[800px] '>

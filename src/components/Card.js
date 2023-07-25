@@ -1,5 +1,5 @@
 import { useStoreState } from 'easy-peasy';
-import React, {useState } from 'react'
+import React, { useRef, useState } from 'react'
 
 const Card = ({details}) => {
     const [click,setClick]=useState(false)
@@ -19,13 +19,15 @@ const handleClick = (ans) => {
   }
 }
 
+
       
 const arr = [details.correct_answer, details.incorrect_answers[0], details.incorrect_answers[1], details.incorrect_answers[2]]
-const shuffled  = arr.filter(function(x){
+const shuffled = useRef(arr.filter(function(x){
   return x !== undefined;
-}).sort((a,b) => 0.5 - Math.random())
+}).sort((a,b) => 0.5 - Math.random()))
 
-console.log('shuffled',shuffled)
+
+// console.log('shuffled',shuffled)
   return (
     <div 
     className='text-center w-[80] h-auto border-2 border-black border-solid'
@@ -35,12 +37,12 @@ console.log('shuffled',shuffled)
         <span className='h-10 block'>{isAlertVisible?'incorrect':''}</span>
         {interactive?answered?'correct': details.type==='multiple'?
         <div className='mb-4'>
-          { shuffled.map((item)=>
+          {shuffled.current.map((item)=>
           <>
             <button onClick={()=>handleClick(item)} className='border-2 border-black p-2 mx-1'>{item}</button>
           </>
           )}
-        </div>: details.type==='boolean'? <>{shuffled.sort().reverse().map((item)=><p className='hover:cursor-pointer text-3xl bg-green-100 m-6'
+        </div>: details.type==='boolean'? <>{shuffled.current.sort().reverse().map((item)=><p className='hover:cursor-pointer text-3xl bg-green-100 m-6'
           onClick={()=>handleClick(item)}>{item}</p>)}</> : 'nope' : <button onClick={()=>setClick(!click)}>{click?details.correct_answer:'find out'}</button>
 }
     </div>
