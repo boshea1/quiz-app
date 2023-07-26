@@ -10,6 +10,7 @@ function App() {
   const addInteractive = useStoreActions((actions) => actions.addInteractive);
   const [questions, setQuestions] = useState('')
   const [category, setCategory] = useState('')
+  const [clicked,setClicked]=useState(false)
   const baseURL=`https://opentdb.com/api.php?amount=10${category?`&category=${category}`:''}`
   useEffect(()=>{
     axios.get(baseURL).then((response) => {
@@ -27,6 +28,12 @@ function App() {
     const c = event.target.value
     console.log("User Selected Value - ", event.target.value)
     setCategory(options[c])
+    setClicked(true)
+    
+  }
+
+  const handleClicked = () => {
+    setClicked(false)
   }
   
   return (
@@ -57,7 +64,7 @@ function App() {
 </div>
      <div className='h-[800px] '>
       {questions && questions.results.map((item, id)=>
-          <Card key={id} details={item}/>
+          <Card key={id} details={item} category={category} clicked={clicked} handleClicked={handleClicked}/>
       )
 
       }
