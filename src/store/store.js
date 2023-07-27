@@ -5,6 +5,13 @@ export const store = createStore({
     addInteractive: action((state, payload) => {
       state.interactive = !state.interactive
     }),
+    score: 0,
+    setScore: action((state, payload) => {
+     state.score = state.score + payload
+    }),
+    resetScore: action((state, payload) => {
+      state.score = 0
+     }),
   });
 
 

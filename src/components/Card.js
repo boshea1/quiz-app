@@ -1,7 +1,8 @@
-import { useStoreState } from 'easy-peasy';
+import { useStoreActions, useStoreState } from 'easy-peasy';
 import React, { useState } from 'react'
 
 const Card = ({details, category, clicked, handleClicked}) => {
+  const setScore = useStoreActions((actions) => actions.setScore);
     const [click,setClick]=useState(false)
     const  interactive = useStoreState((state) => state.interactive);
     const [answered,setAnswered] = useState(false)
@@ -11,6 +12,7 @@ const handleClick = (ans) => {
  
   if (ans===details.correct_answer){
     setAnswered(!answered)
+    setScore(1)
   } else {
     setIsAlertVisible(true);
     setTimeout(() => {
@@ -35,6 +37,8 @@ const shuffled =  (arr.filter(function(x){
     console.log('clicked')
     setAnswered(false)
     handleClicked()
+    
+    
   }
 
 
