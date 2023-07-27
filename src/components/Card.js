@@ -34,7 +34,6 @@ const shuffled =  (arr.filter(function(x){
 
 
   if (clicked && answered){
-    console.log('clicked')
     setAnswered(false)
     handleClicked()
     

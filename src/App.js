@@ -15,13 +15,25 @@ function App() {
   const [clicked,setClicked]=useState(false)
   const baseURL=`https://opentdb.com/api.php?amount=10${category?`&category=${category}`:''}`
   
+    
   useEffect(()=>{
-    axios.get(baseURL).then((response) => {
-      setQuestions(response.data);
-    });
+      axios.get(baseURL).then((response) => {
+        setQuestions(response.data);
+      });
   },[baseURL])
 
-
+  const getDat = () => {
+    try {
+      axios.get(baseURL).then((response) => {
+        setQuestions(response.data);
+        setClicked(true)
+        resetScore()
+      
+      });
+    } catch (err) {
+        console.log(err.message)
+    }
+  }
   
   const onToggle = (e) => {
     console.log(e)
@@ -49,7 +61,8 @@ function App() {
      </div> 
       <div className={'flex w-full flex-row justify-between '}>
         <div>
-        <div className='mb-10 '>
+        <div className='mb-10 ml-7'>
+      <button onClick={()=>getDat()}>refresh</button>
       <Toggle 
           onClick={(event)=>onToggle(event)}
           off={<h2>{interactive? 'ON':'OFF'}</h2>}
@@ -59,7 +72,7 @@ function App() {
           active={interactive}
           />
           </div>
-          <div className='border-solid border-2 border-black'> 
+          <div className='ml-7'> 
           <select onChange={onOptionChangeHandler}>
           <option>Please choose one option</option>
           {Object.keys(options).map((keyname,i)=>(
@@ -68,9 +81,9 @@ function App() {
           </select>
           </div>
           </div>
-          <div className=' w-[100px] h-[100px] mr-4 mb-2'>
-            {score===10? <img className='visible w-[100]' 
-            src='https://cdn-icons-png.flaticon.com/128/11515/11515741.png' alt='10'/> :''}
+          <div className=' w-[100px] h-[100px] mr-1 mb-2'>
+            {score>=10? <img className='visible w-[100]' 
+            src='https://cdn-icons-png.flaticon.com/128/11515/11515741.png' alt='10'/> :'' }
           {interactive && score<10&&<p>{`Score: ${score}/10`}</p>}
            </div>
 </div>
